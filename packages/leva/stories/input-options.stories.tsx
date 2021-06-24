@@ -3,7 +3,7 @@ import { Meta } from '@storybook/react'
 import Reset from './components/decorator-reset'
 import { Half2Icon, OpacityIcon, DimensionsIcon } from '@radix-ui/react-icons'
 
-import { folder, useControls, LevaInputs } from '../src'
+import { folder, useControls, Leva, LevaInputs } from '../src'
 
 export default {
   title: 'Misc/Input options',
@@ -76,14 +76,14 @@ export const Optional = () => {
 
 function A() {
   const renderRef = React.useRef(0)
-  const divRef = React.useRef(null)
+  const divRef = React.useRef<HTMLDivElement>(null)
   renderRef.current++
   const data = useControls({
     color: {
       value: '#f00',
       onChange: (v) => {
-        divRef.current.style.color = v
-        divRef.current.innerText = `Transient color is ${v}`
+        divRef.current!.style.color = v
+        divRef.current!.innerText = `Transient color is ${v}`
       },
     },
   })
@@ -120,6 +120,36 @@ export const OnChange = () => {
 }
 
 OnChange.storyName = 'onChange'
+
+export const CustomCopy = () => {
+  const { id, label } = useControls({
+    id: {
+      value: 'button-id',
+      copy(key, value): string {
+        return `<button ${key}="${value}">${label}</button>`
+      },
+    },
+    label: {
+      value: 'Leva is awesome',
+      copy(key, value) {
+        return `<button>{${value}}</button>`
+      },
+    },
+  })
+
+  const handleLevaCopy = (values: any) => {
+    return `<button
+  id="${id}"
+>${label}</button>`
+  }
+
+  return (
+    <div>
+      <Leva copy={handleLevaCopy} />
+      <button id={id}>{label}</button>
+    </div>
+  )
+}
 
 export const OnChangeWithRender = ({ transient }) => {
   const ref = React.useRef<HTMLPreElement | null>(null)

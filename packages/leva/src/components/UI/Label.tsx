@@ -49,7 +49,7 @@ function RawLabel(props: LabelProps) {
 }
 
 export function Label({ align, ...props }: LabelProps & { align?: 'top' }) {
-  const { value, label, key } = useInputContext()
+  const { value, label, key, copy = (key, value) => JSON.stringify({ [key]: value ?? '' }) } = useInputContext()
   const { hideCopyButton } = usePanelSettingsContext()
 
   const copyEnabled = !hideCopyButton && key !== undefined
@@ -58,7 +58,7 @@ export function Label({ align, ...props }: LabelProps & { align?: 'top' }) {
 
   const handleClick = async () => {
     try {
-      await navigator.clipboard.writeText(JSON.stringify({ [key]: value ?? '' }))
+      await navigator.clipboard.writeText(copy(key, value))
       setCopied(true)
     } catch {
       warn(LevaErrors.CLIPBOARD_ERROR, { [key]: value })

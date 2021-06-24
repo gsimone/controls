@@ -1,9 +1,11 @@
-import React, { useMemo, useState, useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useDrag } from 'react-use-gesture'
-import { debounce } from '../../utils'
+import { debounce, LevaErrors, warn } from '../../utils'
 import { FolderTitleProps } from '../Folder'
 import { Chevron } from '../UI'
-import { StyledFilterInput, StyledTitleWithFilter, TitleContainer, Icon, FilterWrapper } from './StyledFilter'
+import { FilterWrapper, Icon, StyledFilterInput, StyledTitleWithFilter, TitleContainer } from './StyledFilter'
+import { useStoreContext } from '../../context'
+import { DataInput } from '../../types'
 
 type FilterProps = { setFilter: (value: string) => void; toggle: (flag?: boolean) => void }
 
@@ -53,6 +55,8 @@ export type TitleWithFilterProps = FilterProps &
     title: React.ReactNode
     drag: boolean
     filterEnabled: boolean
+    hideCopyButton: boolean
+    copy?: (values: unknown) => string
   }
 
 export function TitleWithFilter({
@@ -63,9 +67,12 @@ export function TitleWithFilter({
   title,
   drag,
   filterEnabled,
+  hideCopyButton,
+  copy,
 }: TitleWithFilterProps) {
   const [filterShown, setShowFilter] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const store = useStoreContext()
 
   useEffect(() => {
     if (filterShown) inputRef.current?.focus()
@@ -84,13 +91,35 @@ export function TitleWithFilter({
     return () => window.removeEventListener('keydown', handleShortcut)
   }, [])
 
+  const [copied, setCopied] = useState(false)
+  const handleCopyClick = async () => {
+    const data = { ...store.getData() } as any
+    try {
+      for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+          const keyData = data[key] as DataInput
+          if (!keyData.disabled) {
+            data[key] = keyData.value
+          } else {
+            delete data[key]
+          }
+        }
+      }
+      await navigator.clipboard.writeText(copy ? copy(data) : JSON.stringify(data))
+      setCopied(true)
+    } catch {
+      warn(LevaErrors.CLIPBOARD_ERROR, data)
+    }
+  }
+
   return (
     <>
-      <StyledTitleWithFilter mode={drag ? 'drag' : undefined}>
+      <StyledTitleWithFilter mode={drag ? 'drag' : undefined} onPointerLeave={() => setCopied(false)}>
         <Icon active={!toggled} onClick={() => toggle()}>
           <Chevron toggled={toggled} width={12} height={8} />
         </Icon>
         <TitleContainer {...(drag ? bind() : {})} drag={drag} filterEnabled={filterEnabled}>
+          {!hideCopyButton && <div style={{ width: 40 }} />}
           {title === undefined && drag ? (
             <svg width="20" height="10" viewBox="0 0 28 14" xmlns="http://www.w3.org/2000/svg">
               <circle cx="2" cy="2" r="2" />
@@ -104,6 +133,25 @@ export function TitleWithFilter({
             title
           )}
         </TitleContainer>
+        {!hideCopyButton && (
+          <Icon onClick={!copied ? handleCopyClick : undefined} title={`Click to copy all values`}>
+            {!copied ? (
+              <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                <path
+                  fillRule="evenodd"
+                  d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm9.707 5.707a1 1 0 00-1.414-1.414L9 12.586l-1.293-1.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+          </Icon>
+        )}
         {filterEnabled && (
           <Icon active={filterShown} onClick={() => setShowFilter((f) => !f)}>
             <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 20 20">
