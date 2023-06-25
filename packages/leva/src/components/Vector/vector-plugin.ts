@@ -145,6 +145,7 @@ export function normalizeVector<Value extends VectorType, K extends string>(
 ) {
   const { lock = false, ..._settings } = settings
   const format: Format = Array.isArray(value) ? 'array' : 'object'
+  // FIXME: This is crashing: value is undefined
   const keys = format === 'object' ? Object.keys(value) : defaultKeys
   const _value = convert(value, 'object', keys)
 

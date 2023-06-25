@@ -1,0 +1,19 @@
+{
+  "name": "@leva-ui/plugin-vector3j",
+  "version": "0.9.32",
+  "main": "dist/leva-ui-plugin-vector3j.cjs.js",
+  "module": "dist/leva-ui-plugin-vector3j.esm.js",
+  "types": "dist/leva-ui-plugin-vector3j.cjs.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pmndrs/leva.git",
+    "directory": "packages/plugin-vector3j"
+  },
+  "bugs": "https://github.com/pmndrs/leva/issues",
+  "peerDependencies": {
+    "leva": ">=0.9.34",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  }
+}

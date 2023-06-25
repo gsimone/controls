@@ -6,6 +6,9 @@ import { Noise } from 'noisejs'
 import { DimensionsIcon } from '@radix-ui/react-icons'
 import styles from './styles.module.css'
 
+import { bezier } from '@leva-ui/plugin-bezier'
+import { vector3j } from '@leva-ui/plugin-vector3j'
+
 const noise = new Noise(Math.random())
 
 function frame() {
@@ -43,6 +46,10 @@ const ExtraControls = () => {
 
 function Controls() {
   const data = useControls({
+    vector2d: [10, 10],
+    vector3d: [10, 10, 10],
+    vector3j: vector3j({ value: { x: 20, y: 20, z: 20 }, lock: true }),
+    curve: bezier([0.54, 0.05, 0.6, 0.98]),
     dimension: '4px',
     string: { value: 'something', optional: true, order: -2 },
     range: { value: 0, min: -10, max: 10, order: -3 },
