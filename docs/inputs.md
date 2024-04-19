@@ -75,7 +75,14 @@ All rules from Number type also apply.
 
 ### Select
 
-@todo
+A dropdown select input with a specified list of elements. An optional default value can be provided.
+
+```jsx
+const presetColor = useControls({
+  options: ['red', 'green', 'blue', 'yellow'],
+  value: 'red'
+})
+```
 
 ### Image
 
