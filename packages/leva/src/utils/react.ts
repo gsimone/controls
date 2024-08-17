@@ -1,20 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-
-/**
- * With React 18, renderers will warn when not using the new createRoot signature to opt-in to concurrent mode.
- * We're okay with creating a (blocking) legacy root to support older versions, so we disable the warning.
- * @see https://github.com/facebook/react/pull/21652
- */
-export function render<P>(element: React.ReactElement<P>, container: HTMLElement): void {
-  // eslint-disable-next-line no-console
-  const error = console.error
-  // eslint-disable-next-line no-console
-  console.error = () => {}
-  ReactDOM.render(element, container)
-  // eslint-disable-next-line no-console
-  console.error = error
-}
 
 /*
  * https://github.com/gregberge/react-merge-refs
