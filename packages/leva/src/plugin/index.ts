@@ -8,6 +8,7 @@ import { Boolean } from '../components/Boolean'
 import { Select } from '../components/Select'
 import { Vector } from '../components/Vector'
 import { InnerLabel } from '../components/ValueInput/StyledInput'
+import { RangeSlider } from '../components/Number/RangeSlider'
 
 export const Components = {
   Row,
@@ -20,6 +21,7 @@ export const Components = {
   Select,
   Vector,
   InnerLabel,
+  RangeSlider,
 }
 
 export { colord } from 'colord'

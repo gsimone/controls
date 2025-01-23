@@ -1,0 +1,5 @@
+---
+'leva': patch
+---
+
+Export RangeSlider
