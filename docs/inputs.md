@@ -17,9 +17,21 @@ const { myNumber } = useControls({
 - Automatically filters the input to be a numerical value
 - Automatically calculates the number input step based on the initial value magnitude and significant digits.
 
+You can disable the inner label with `disableInnerLabel`.
+
+```jsx
+const { myNumber } = useControls({
+  myNumber: {
+    value: 4,
+    disableInnerLabel: true
+  },
+})
+```
+
+
 ### Range
 
-A Number input with an additional range slider. It will be used when you provide a `min` and `max` value.
+A Number input with an additional range slider. By default will be used when you provide a `min` and `max` value.
 
 ```jsx
 const { myNumber } = useControls({
@@ -28,6 +40,20 @@ const { myNumber } = useControls({
     min: 0,
     max: 10,
     step: 1,
+  },
+})
+```
+
+It can be disabed with `disableRangeSlider`.
+
+```jsx
+const { myNumber } = useControls({
+  myNumber: {
+    value: 4,
+    min: 0,
+    max: 10,
+    step: 1,
+    disableRangeSlider: true,
   },
 })
 ```

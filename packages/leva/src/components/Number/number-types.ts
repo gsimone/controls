@@ -7,6 +7,8 @@ export type InternalNumberSettings = {
   pad: number
   initialValue: number
   suffix?: string
+  disableInnerLabel?: boolean
+  disableRangeSlider?: boolean
 }
 export type NumberInput = InputWithSettings<number | string, NumberSettings>
 

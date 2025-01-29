@@ -86,7 +86,13 @@ export type FolderSettings = {
   order?: number
 }
 
-export type NumberSettings = { min?: number; max?: number; step?: number }
+export type NumberSettings = { 
+  min?: number; 
+  max?: number; 
+  step?: number,  
+  disableInnerLabel?: boolean, 
+  disableRangeSlider?: boolean
+}
 
 export type VectorObj = Record<string, number>
 
