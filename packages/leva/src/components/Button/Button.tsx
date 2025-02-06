@@ -5,7 +5,7 @@ import { Row } from '../UI'
 import { StyledButton } from './StyledButton'
 
 type ButtonProps = {
-  label: string
+  label: string | JSX.Element
 } & Omit<ButtonInput, 'type'>
 
 export function Button({ onClick, settings, label }: ButtonProps) {

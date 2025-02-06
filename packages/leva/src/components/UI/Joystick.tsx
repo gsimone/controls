@@ -1,16 +1,16 @@
 import React, { useState, useRef, useCallback, useEffect, useLayoutEffect } from 'react'
 import { useDrag } from '../../hooks'
 import { clamp, multiplyStep } from '../../utils'
-import { JoystickTrigger, JoystickPlayground } from './StyledJoystick'
+import { JoystickTrigger, JoystickPlayground, JoystickGrid } from './StyledJoystick'
 import { useTh } from '../../styles'
-import { Portal } from '../UI'
+import { Portal } from '.'
 import { useTransform } from '../../hooks'
-import type { Vector2d } from '../../types'
-import type { Vector2dProps } from './vector2d-types'
+import type { Vector2d, Vector3d } from '../../types'
+import type { Vector2dProps } from '../Vector2d/vector2d-types'
 
-type JoystickProps = { value: Vector2d } & Pick<Vector2dProps, 'onUpdate' | 'settings'>
+type JoystickProps = { value: Vector2d | Vector3d } & Pick<Vector2dProps, 'onUpdate' | 'settings'> & { children?: any }
 
-export function Joystick({ value, settings, onUpdate }: JoystickProps) {
+export function Joystick({ value, settings, onUpdate, children }: JoystickProps) {
   const timeout = useRef<number | undefined>()
   const outOfBoundsX = useRef(0)
   const outOfBoundsY = useRef(0)
@@ -52,13 +52,14 @@ export function Joystick({ value, settings, onUpdate }: JoystickProps) {
     if (outOfBoundsX.current) set({ x: outOfBoundsX.current * w })
     if (outOfBoundsY.current) set({ y: outOfBoundsY.current * -h })
     timeout.current = window.setInterval(() => {
-      onUpdate((v: Vector2d) => {
+      onUpdate((v: Vector2d | Vector3d) => {
         const incX = stepV1 * outOfBoundsX.current * stepMultiplier.current
         const incY = yFactor * stepV2 * outOfBoundsY.current * stepMultiplier.current
+
         return Array.isArray(v)
           ? {
-              [v1]: v[0] + incX,
-              [v2]: v[1] + incY,
+              [v1]: v[['x', 'y', 'z'].indexOf(v1)] + incX,
+              [v2]: v[['x', 'y', 'z'].indexOf(v2)] + incY,
             }
           : {
               [v1]: v[v1] + incX,
@@ -128,7 +129,7 @@ export function Joystick({ value, settings, onUpdate }: JoystickProps) {
       {joystickShown && (
         <Portal>
           <JoystickPlayground ref={playgroundRef} isOutOfBounds={isOutOfBounds}>
-            <div />
+            {children ? children : <JoystickGrid />}
             <span ref={spanRef} />
           </JoystickPlayground>
         </Portal>

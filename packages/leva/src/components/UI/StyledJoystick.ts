@@ -31,41 +31,15 @@ export const JoystickPlayground = styled('div', {
   boxShadow: '$level2',
   position: 'fixed',
   zIndex: 10000,
-  overflow: 'hidden',
   $draggable: '',
   transform: 'translate(-50%, -50%)',
+
+  perspective: '100px',
 
   variants: {
     isOutOfBounds: {
       true: { backgroundColor: '$elevation1' },
       false: { backgroundColor: '$elevation3' },
-    },
-  },
-  '> div': {
-    position: 'absolute',
-    $flexCenter: '',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderColor: '$highlight1',
-    backgroundColor: '$elevation3',
-    width: '80%',
-    height: '80%',
-
-    '&::after,&::before': {
-      content: '""',
-      position: 'absolute',
-      zindex: 10,
-      backgroundColor: '$highlight1',
-    },
-
-    '&::before': {
-      width: '100%',
-      height: 1,
-    },
-
-    '&::after': {
-      height: '100%',
-      width: 1,
     },
   },
 
@@ -76,5 +50,32 @@ export const JoystickPlayground = styled('div', {
     height: 10,
     backgroundColor: '$accent2',
     borderRadius: '50%',
+  },
+})
+
+export const JoystickGrid = styled('div', {
+  position: 'absolute',
+  $flexCenter: '',
+  borderStyle: 'solid',
+  borderWidth: 1,
+  borderColor: '$highlight1',
+  width: '80%',
+  height: '80%',
+
+  '&::after,&::before': {
+    content: '""',
+    position: 'absolute',
+    zindex: 10,
+    backgroundColor: '$highlight1',
+  },
+
+  '&::before': {
+    width: '100%',
+    height: 1,
+  },
+
+  '&::after': {
+    height: '100%',
+    width: 1,
   },
 })

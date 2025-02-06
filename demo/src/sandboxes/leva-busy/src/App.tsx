@@ -43,6 +43,8 @@ const ExtraControls = () => {
 
 function Controls() {
   const data = useControls({
+    vector2D: [10, 10],
+    vector3D: [10, 10, 10],
     dimension: '4px',
     string: { value: 'something', optional: true, order: -2 },
     range: { value: 0, min: -10, max: 10, order: -3 },
