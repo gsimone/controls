@@ -1,6 +1,7 @@
 import type { LevaInputProps } from 'leva/plugin'
+import type { ImportObject } from 'mathjs'
 
-export type Plot = { expression: string }
+export type Plot = { expression: string; imported?: ImportObject }
 export type PlotSettings = { boundsX?: [number, number]; boundsY?: [number, number]; graph?: boolean }
 export type PlotInput = Plot & PlotSettings
 

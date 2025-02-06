@@ -36,6 +36,16 @@ BoundsX.args = { expression: 'cos(x)', boundsX: [-10, 10] }
 export const BoundsY = Template.bind({})
 BoundsY.args = { expression: 'sin(x) * tan(x)', boundsX: [-10, 10], boundsY: [-1, 1] }
 
+export const ImportedFunc = Template.bind({})
+ImportedFunc.args = {
+  expression: 'mix(0, 1, x)',
+  imported: {
+    mix: (a: number, b: number, x: number) => {
+      return a + (b - a) * x
+    },
+  },
+}
+
 export const InputAsVariable = () => {
   const { y } = useControls({ var: 10, y: plot({ expression: 'cos(x * var)' }) })
   return (

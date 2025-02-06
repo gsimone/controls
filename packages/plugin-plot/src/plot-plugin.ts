@@ -1,6 +1,6 @@
 import { Data, StoreType } from 'packages/leva/src/types'
 import * as math from 'mathjs'
-import { parseExpression } from './plot-utils'
+import { parseExpression, createInstance } from './plot-utils'
 import type { PlotInput, InternalPlot, InternalPlotSettings } from './plot-types'
 
 export const sanitize = (
@@ -24,12 +24,13 @@ export const format = (value: InternalPlot) => {
 
 const defaultSettings = { boundsX: [-1, 1], boundsY: [-Infinity, Infinity], graph: true }
 
-export const normalize = ({ expression, ..._settings }: PlotInput, _path: string, data: Data) => {
+export const normalize = ({ expression, imported, ..._settings }: PlotInput, _path: string, data: Data) => {
   const get = (path: string) => {
     // @ts-expect-error
     if ('value' in data[path]) return data[path].value
     return undefined // TODO should throw
   }
+  createInstance(imported)
   const value = parseExpression(expression, get) as (v: number) => any
   const settings = { ...defaultSettings, ..._settings }
   return { value, settings: settings as InternalPlotSettings }

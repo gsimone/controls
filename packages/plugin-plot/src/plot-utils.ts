@@ -1,4 +1,13 @@
-import * as math from 'mathjs'
+import * as mathjs from 'mathjs'
+
+let math = mathjs
+
+export function createInstance(imported: math.ImportObject) {
+  math = mathjs.create(mathjs.all)
+  if (imported !== undefined) {
+    math.import(imported, {})
+  }
+}
 
 export function getSymbols(expr: math.MathNode) {
   return expr
